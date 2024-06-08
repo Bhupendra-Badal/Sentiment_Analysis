@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Sentiment Analysis</h1>
+        <form id="sentiment-form">
+            <input type="text" id="video-id" placeholder="Enter YouTube Video ID" required>
+            <button type="submit">Analyze</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        document.getElementById('sentiment-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const videoId = document.getElementById('video-id').value;
+            const response = await fetch('/predict-sentiment/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ video_id: videoId })
+            });
+            const data = await response.json();
+            if (data.message) {
+                document.getElementById('result').innerText = data.message;
+            } else {
+                document.getElementById('result').innerHTML = `
+                    <p>Total Comments: ${data.total_comments}</p>
+                    <p>😊Positive Sentiment: ${data.positive_percentage.toFixed(2)}%</p>
+                    <p>😠Negative Sentiment: ${data.negative_percentage.toFixed(2)}%</p>
+                    <p>😐Neutral Sentiment: ${data.neutral_percentage.toFixed(2)}%</p>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

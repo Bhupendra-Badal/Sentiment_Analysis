@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Comment Analyzer</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="static\\style.css">
+  <style>
+    #loading-indicator {
+      display: none;
+      font-size: 18px;
+      color: black;
+    }
+    .collapsible-list {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>YouTube Comment Analyzer</h1>
+  <div class="container">
+    <div class="input-box">
+        <input type="text" id="comment-url" placeholder="Enter YouTube video URL here">
+        <select id="model-select">
+            <option value="svm">SVM</option>
+            <option value="logistic">Logistic</option>
+            <option value="naive">Naive</option>
+        </select>
+        <button type="button" id="submit-btn">Analyze Comment</button>
+        <br><br>
+    </div>
+    <div id="result-container">
+      <p class="fa fa-spinner fa-spin" id = "loading-indicator" style="display: none;"></p>
+      <p id="sentiment-percentage"></p>
+      <div class="collapsible-list" id="positive-comments">
+`        <button type="button" class="collapsible">Positive Comments</button>
+        <div class="content"></div>
+      </div>
+      <div class="collapsible-list" id="neutral-comments">
+        <button type="button" class="collapsible">Neutral Comments</button>
+        <div class="content"></div>
+      </div>
+      <div class="collapsible-list" id="negative-comments">
+        <button type="button" class="collapsible">Negative Comments</button>
+        <div class="content"></div>
+      </div>
+      <!-- <button type="button" id="download-btn">Download CSV</button> -->
+    </div>
+  </div>
+  <script src="static\\script.js"></script>
+  <!-- <script>
+
+    const selected_model = document.getElementById('model_select')
+
+    document.getElementById('submit-btn').addEventListener('click', function() {
+      var videoUrl = document.getElementById('comment-url').value.trim();
+      if (videoUrl === '') {
+        alert('Please enter a YouTube video URL.');
+        return;
+      }
+
+      // Show loading indicator
+      document.getElementById('loading-indicator').style.display = 'block';
+
+      fetch('/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ video_url: videoUrl , })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Hide loading indicator
+        document.getElementById('loading-indicator').style.display = 'none';
+
+        if (data.error) {
+          alert(data.error);
+        } else {
+          displaySentimentPercentage(data.sentiment_percentage);
+          displayComments(data.comments);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred during analysis.');
+      });
+    });
+  </script> -->
+</body>
+</html>
